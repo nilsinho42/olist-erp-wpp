@@ -10,7 +10,7 @@ import (
 
 // Security package encrypts and decrypts the token
 
-func encryptAES(key, plaintext []byte) ([]byte, error) {
+func EncryptAES(key, plaintext []byte) ([]byte, error) {
 	block, err := aes.NewCipher(key)
 	if err != nil {
 		return nil, err
@@ -31,7 +31,7 @@ func encryptAES(key, plaintext []byte) ([]byte, error) {
 	return ciphertext, nil
 }
 
-func decryptAES(key, ciphertext []byte) ([]byte, error) {
+func DecryptAES(key, ciphertext []byte) ([]byte, error) {
 	block, err := aes.NewCipher(key)
 	if err != nil {
 		return nil, err

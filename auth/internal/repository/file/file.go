@@ -10,8 +10,9 @@ import (
 	"strings"
 	"sync"
 
-	"auth/internal/security"
-	"auth/pkg/model"
+	encrypt "auth/internal/security"
+
+	"github.com/nilsinho42/OlistERPMediator/auth/pkg/model"
 )
 
 type Repository struct {
@@ -42,9 +43,10 @@ func (r *Repository) Get(_ context.Context) (*model.Token, error) {
 
 	err = json.Unmarshal(data, &token)
 
-	err, decrypted_token := security.DecryptAES([]byte("key"), token.Key)
+	decrypted_token, err := encrypt.DecryptAES([]byte("key"), token.Key)
 	if err != nil {
 		return nil, err
 	}
+
 	return decrypted_token, err
 }
