@@ -27,9 +27,12 @@ func (r *Repository) Get(_ context.Context) (*model.Token, error) {
 	const filename = ".token_store.json"
 	var token *model.Token
 
-	filepath := os.Getenv("TOKEN_PATH")
-	filepath = strings.Join([]string{filepath, filename}, string(os.PathSeparator))
+	filepath, err := os.Getwd()
+	if err != nil {
+		return token, nil
+	}
 
+	filepath = strings.Join([]string{filepath, filename}, string(os.PathSeparator))
 	file, err := os.Open(filepath)
 	if err != nil {
 		return token, err
