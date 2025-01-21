@@ -21,10 +21,8 @@ code=34adade1-6ac4-4a5a-a394-2c47177a9311.95c5eb2f-e8a8-4f48-8bf2-fa2882f6c607.3
 - Tokens are encrypted for security, with the encryption key stored in environmental variables.
 
 ## Next Steps
-- In file.go, need to define a way to get the file_path, probably using a environmental variable
-- Then, I can run a test by manually saving the token to the file and trying to read it to see the response
-- Later, need to add the code to write the token to the file 
-- Then, need to try reading it again
+- Create the Get and Put for PostgreSQL
+- Create the API to receive the PUT with the TOKEN
 
 ## Future Developments
 - Perform the refresh token through AWS Functions with a trigger every 8 hours. Then, even when the server is down, the tokens will still refresh. Also, will allow to turn off and turn on the servers based on users activity. For example, weekends, holidays, and other dates where there may be no requests, there would be no reason to keep the host on. Would also have to create a trigger to start the server whenever needed (based on incoming request). Also, it would request one intermediator to get the requests and turn on/off the remaining services on demand. Not sure how to achieve this, btw.

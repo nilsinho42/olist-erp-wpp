@@ -1,12 +1,10 @@
-package main
+package file
 
 // Manage the file that stores the token
 
 import (
 	"context"
 	"encoding/json"
-	"fmt"
-	"io"
 	"os"
 	"strings"
 	"sync"
@@ -34,19 +32,15 @@ func (r *Repository) Get(_ context.Context) (*model.Token, error) {
 	}
 
 	filepath = strings.Join([]string{filepath, filename}, string(os.PathSeparator))
+
 	file, err := os.Open(filepath)
 	if err != nil {
 		return r.data, err
 	}
 	defer file.Close()
-	data, err := io.ReadAll(file)
+	err = json.NewDecoder(file).Decode(&r.data)
 	if err != nil {
 		return r.data, err
-	}
-
-	err = json.Unmarshal(data, &r.data)
-	if err != nil {
-		return nil, err
 	}
 
 	byte_token := []byte(r.data.Key)
@@ -86,6 +80,7 @@ func (r *Repository) Put(_ context.Context) error {
 }
 
 // for testing!
+/*
 func main() {
 	r := Repository{}
 	r.data = &model.Token{}
@@ -105,3 +100,4 @@ func main() {
 	}
 	fmt.Println(string(bytes))
 }
+*/
