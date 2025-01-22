@@ -5,6 +5,7 @@ package file
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"os"
 	"strings"
 	"sync"
@@ -15,62 +16,65 @@ import (
 	"auth/pkg/model"
 )
 
-type Repository struct {
+type Repository interface {
+	Get(ctx context.Context) (*model.Token, error)
+	Put(ctx context.Context) error
+}
+
+type TokenStoreFile struct {
 	sync.RWMutex
 	data *model.Token
 }
 
-func (r *Repository) Get(_ context.Context) (*model.Token, error) {
-	r.RLock()
-	defer r.RUnlock()
+func (t *TokenStoreFile) Get(_ context.Context) (*model.Token, error) {
+	t.RLock()
+	defer t.RUnlock()
 
 	const filename = ".token_store.json"
 
-	filepath, err := os.Getwd()
-	if err != nil {
-		return r.data, nil
+	dir := os.Getenv("TOKEN_STORE_DIR")
+	if dir == "" {
+		return t.data, fmt.Errorf("TOKEN_STORE_DIR not set")
 	}
-
-	filepath = strings.Join([]string{filepath, filename}, string(os.PathSeparator))
-
+	filepath := strings.Join([]string{dir, filename}, string(os.PathSeparator))
 	file, err := os.Open(filepath)
 	if err != nil {
-		return r.data, err
+		return t.data, err
 	}
 	defer file.Close()
-	err = json.NewDecoder(file).Decode(&r.data)
+	err = json.NewDecoder(file).Decode(&t.data)
 	if err != nil {
-		return r.data, err
+		return t.data, err
 	}
 
-	byte_token := []byte(r.data.Key)
+	byte_token := []byte(t.data.Key)
 	decrypted_token, err := encrypt.DecryptAES(byte_token)
 	if err != nil {
 		return nil, err
 	}
 
-	r.data.Key = string(decrypted_token)
-	return r.data, err
+	t.data.Key = string(decrypted_token)
+	return t.data, err
 }
 
-func (r *Repository) Put(_ context.Context) error {
-	r.Lock()
-	defer r.Unlock()
+func (t *TokenStoreFile) Put(_ context.Context) error {
+	t.Lock()
+	defer t.Unlock()
 	// decrypt> 3) encrypt the token
-	encrypted_token, err := encrypt.EncryptAES([]byte(r.data.Key))
+	encrypted_token, err := encrypt.EncryptAES([]byte(t.data.Key))
 	if err != nil {
 		return err
 	}
 
 	// decrypt> 4) update the token
-	r.data.Key = string(encrypted_token)
+	t.data.Key = string(encrypted_token)
 
 	// decrypt> 5) update the last updated time
-	r.data.Lastupdate = time.Now().Format(time.RFC3339)
+	t.data.Lastupdate = time.Now().Format(time.RFC3339)
 
 	// decrypt> 6) save to the json file
 	const filename = ".token_store.json"
-	bytes, err := json.MarshalIndent(r.data, "", "   ")
+	bytes, err := json.MarshalIndent(t.data, "", "   ")
 	if err != nil {
 		return err
 	}
@@ -79,17 +83,25 @@ func (r *Repository) Put(_ context.Context) error {
 	return nil
 }
 
+func NewTokenStoreFile() (Repository, error) {
+	d := &TokenStoreFile{data: &model.Token{}}
+	d.data.Key = "34adade1-6ac4-4a5a-a394-2c47177a9311.95c5eb2f-e8a8-4f48-8bf2-fa2882f6c607.3dcda8a1-a6ef-4964-adcc-d0a5e1b8eebb"
+
+	return d, nil
+}
+
 // for testing!
 /*
 func main() {
-	r := Repository{}
-	r.data = &model.Token{}
-	r.data.Key = "34adade1-6ac4-4a5a-a394-2c47177a9311.95c5eb2f-e8a8-4f48-8bf2-fa2882f6c607.3dcda8a1-a6ef-4964-adcc-d0a5e1b8eebb"
+	store, err := NewTokenStoreFile()
+	if err != nil {
+		panic(err)
+	}
 
 	// The TOKEN.KEY is encrypted (AES) using a key (hex-encoded) and encoded (BASE64)
-	r.Put(context.Background())
+	store.Put(context.Background())
 
-	token, err := r.Get(context.Background())
+	token, err := store.Get(context.Background())
 	if err != nil {
 		panic(err)
 	}

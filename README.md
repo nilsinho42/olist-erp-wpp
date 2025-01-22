@@ -15,14 +15,13 @@ session_state=95c5eb2f-e8a8-4f48-8bf2-fa2882f6c607
 &
 code=34adade1-6ac4-4a5a-a394-2c47177a9311.95c5eb2f-e8a8-4f48-8bf2-fa2882f6c607.3dcda8a1-a6ef-4964-adcc-d0a5e1b8eebb
 ## Token Management
-- The main token expires after 4 hours, and the refresh token expires after 24 hours, necessitating proper management to maintain connection, as Olist ERP Mediator cannot perform initial authentication.
+- The main token expires after 4 hours, and the refresh token expires after 24 hours, requiring proper management to maintain connection, as Olist ERP Mediator cannot perform initial authentication.
 - Tokens are stored in a PostgreSQL server accessible by all services, considering the application consists of different services possibly running in separate containers.
-- To avoid high costs from continuous PostgreSQL server activity, a replication strategy writes the token to both the database and a file, ensuring token availability even if the database is down.
+- To avoid high costs from continuous PostgreSQL server activity, a replication strategy writes the token to both the database and a JSON file, ensuring token availability even if the database is down.
 - Tokens are encrypted for security, with the encryption key stored in environmental variables.
 
 ## Next Steps
-- Create the Get and Put for PostgreSQL
-- Create the API to receive the PUT with the TOKEN
+- Create the API to receive the GET/PUT with the TOKEN
 
 ## Future Developments
 - Perform the refresh token through AWS Functions with a trigger every 8 hours. Then, even when the server is down, the tokens will still refresh. Also, will allow to turn off and turn on the servers based on users activity. For example, weekends, holidays, and other dates where there may be no requests, there would be no reason to keep the host on. Would also have to create a trigger to start the server whenever needed (based on incoming request). Also, it would request one intermediator to get the requests and turn on/off the remaining services on demand. Not sure how to achieve this, btw.
