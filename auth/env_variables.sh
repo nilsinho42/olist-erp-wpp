@@ -1,0 +1,5 @@
+export TOKEN_STORE_DIR="/Users/nilsontinassiperes/Development/OlistERPMediator/OlistERPMediator/auth/internal/repository/file/"
+export TSTORE_DB_NAME="postgres"
+export TSTORE_DB_HOST="localhost"
+export TSTORE_DB_USER="postgres"
+export TSTORE_DB_PASSWORD="postgres"
