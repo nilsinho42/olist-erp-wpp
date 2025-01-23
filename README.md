@@ -21,7 +21,7 @@ code=34adade1-6ac4-4a5a-a394-2c47177a9311.95c5eb2f-e8a8-4f48-8bf2-fa2882f6c607.3
 - Tokens are encrypted for security, with the encryption key stored in environmental variables.
 
 ## Next Steps
-- Create the API to receive the GET/PUT with the TOKEN
+- Create the API to receive PUT with the TOKEN
 
 ## Future Developments
 - Perform the refresh token through AWS Functions with a trigger every 8 hours. Then, even when the server is down, the tokens will still refresh. Also, will allow to turn off and turn on the servers based on users activity. For example, weekends, holidays, and other dates where there may be no requests, there would be no reason to keep the host on. Would also have to create a trigger to start the server whenever needed (based on incoming request). Also, it would request one intermediator to get the requests and turn on/off the remaining services on demand. Not sure how to achieve this, btw.

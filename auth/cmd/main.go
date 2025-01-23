@@ -8,6 +8,8 @@ import (
 	"auth/internal/repository/pgdb"
 	"net/http"
 	"os"
+
+	"github.com/gorilla/mux"
 )
 
 // Returns the token that client can use to access Olist ERP API, refreshes the token automatically and allow to store a new token
@@ -22,16 +24,21 @@ func main() {
 		User:     os.Getenv("TSTORE_DB_USER"),
 		Password: os.Getenv("TSTORE_DB_PASSWORD"),
 	})
-
+	if err != nil {
+		panic(err)
+	}
 	compositeRepo := &repository.CompositeTokenRepository{
 		Primary:   dbRepo,
 		Secondary: fileRepo,
 	}
 
 	ctrl := olistmediator.New(compositeRepo)
+
 	h := httphandler.New(ctrl)
-	http.Handle("/auth", http.HandlerFunc(h.GetToken))
-	if err := http.ListenAndServe(":8080", nil); err != nil {
+	r := mux.NewRouter()
+	r.HandleFunc("/auth", h.GetToken).Methods("GET")
+	r.HandleFunc("/auth", h.PutToken).Methods("PUT")
+	if err := http.ListenAndServe(":8081", r); err != nil {
 		panic(err)
 	}
 
