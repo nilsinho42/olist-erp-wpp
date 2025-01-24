@@ -49,7 +49,6 @@ func (t *TokenStoreDB) Get(ctx context.Context) (*model.Token, error) {
 func (t *TokenStoreDB) Put(ctx context.Context) error {
 	t.Lock()
 	defer t.Unlock()
-
 	t.data.Lastupdate = time.Now().Format(time.RFC3339)
 
 	insertQuery := `INSERT INTO tokens (key, lastupdate) VALUES ($1, $2)`
@@ -99,7 +98,6 @@ func (t *TokenStoreDB) openConnection(config DBParams) (Repository, error) {
 
 func NewTokenStoreDB(config DBParams) (Repository, error) {
 	t := &TokenStoreDB{data: &model.Token{}}
-	t.data.Key = "34adade1-6ac4-4a5a-a394-2c47177a9311.95c5eb2f-e8a8-4f48-8bf2-fa2882f6c607.3dcda8a1-a6ef-4964-adcc-d0a5e1b8eebb"
 	return t.openConnection(config)
 }
 

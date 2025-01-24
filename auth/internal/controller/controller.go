@@ -1,4 +1,4 @@
-package olistmediator
+package controller
 
 import (
 	"auth/pkg/model"
@@ -7,7 +7,7 @@ import (
 
 type tokenRepository interface {
 	Get(ctx context.Context) (*model.Token, error)
-	Put(ctx context.Context, token *model.Token) error
+	Put(ctx context.Context) error
 }
 
 type Controller struct {
@@ -26,8 +26,8 @@ func (c *Controller) Get(ctx context.Context) (*model.Token, error) {
 	return res, err
 }
 
-func (c *Controller) Put(ctx context.Context, token *model.Token) error {
-	err := c.repo.Put(ctx, token)
+func (c *Controller) Put(ctx context.Context) error {
+	err := c.repo.Put(ctx)
 	if err != nil {
 		return err
 	}

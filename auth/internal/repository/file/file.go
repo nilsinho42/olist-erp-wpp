@@ -60,6 +60,7 @@ func (t *TokenStoreFile) Get(_ context.Context) (*model.Token, error) {
 func (t *TokenStoreFile) Put(_ context.Context) error {
 	t.Lock()
 	defer t.Unlock()
+
 	// decrypt> 3) encrypt the token
 	encrypted_token, err := encrypt.EncryptAES([]byte(t.data.Key))
 	if err != nil {
@@ -70,6 +71,7 @@ func (t *TokenStoreFile) Put(_ context.Context) error {
 	t.data.Key = string(encrypted_token)
 
 	// decrypt> 5) update the last updated time
+	t.data.ID++
 	t.data.Lastupdate = time.Now().Format(time.RFC3339)
 
 	// decrypt> 6) save to the json file
@@ -85,7 +87,6 @@ func (t *TokenStoreFile) Put(_ context.Context) error {
 
 func NewTokenStoreFile() (Repository, error) {
 	d := &TokenStoreFile{data: &model.Token{}}
-	d.data.Key = "34adade1-6ac4-4a5a-a394-2c47177a9311.95c5eb2f-e8a8-4f48-8bf2-fa2882f6c607.3dcda8a1-a6ef-4964-adcc-d0a5e1b8eebb"
 
 	return d, nil
 }

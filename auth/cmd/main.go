@@ -1,7 +1,7 @@
 package main
 
 import (
-	olistmediator "auth/internal/controller"
+	"auth/internal/controller"
 	httphandler "auth/internal/handler/http"
 	"auth/internal/repository"
 	file "auth/internal/repository/file"
@@ -27,12 +27,9 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	compositeRepo := &repository.CompositeTokenRepository{
-		Primary:   dbRepo,
-		Secondary: fileRepo,
-	}
+	compositeRepo := repository.NewCompositeRepository(fileRepo, dbRepo)
 
-	ctrl := olistmediator.New(compositeRepo)
+	ctrl := controller.New(compositeRepo)
 
 	h := httphandler.New(ctrl)
 	r := mux.NewRouter()

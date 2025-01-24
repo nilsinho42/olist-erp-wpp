@@ -1,5 +1,7 @@
-export TOKEN_STORE_DIR="/Users/nilsontinassiperes/Development/OlistERPMediator/OlistERPMediator/auth/internal/repository/file/"
+export TOKEN_STORE_DIR="/Users/nilsontinassiperes/Development/OlistERPMediator/OlistERPMediator/auth/cmd"
 export TSTORE_DB_NAME="postgres"
 export TSTORE_DB_HOST="localhost"
 export TSTORE_DB_USER="postgres"
 export TSTORE_DB_PASSWORD="postgres"
+export API_BASE_URL="http://localhost:8081"
+export API_OLIST_URL="https://api.tiny.com.br/public-api/v3"

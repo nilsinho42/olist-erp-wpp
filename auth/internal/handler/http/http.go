@@ -5,15 +5,14 @@ import (
 	"log"
 	"net/http"
 
-	olistmediator "auth/internal/controller"
-	"auth/pkg/model"
+	"auth/internal/controller"
 )
 
 type Handler struct {
-	ctrl *olistmediator.Controller
+	ctrl *controller.Controller
 }
 
-func New(ctrl *olistmediator.Controller) *Handler {
+func New(ctrl *controller.Controller) *Handler {
 	return &Handler{ctrl}
 }
 
@@ -37,11 +36,15 @@ func (h *Handler) PutToken(w http.ResponseWriter, req *http.Request) {
 	// example curl to validate this:
 	// curl -X PUT "http://localhost:8081/auth?key=34adade1-6ac4-4a5a-a394-2c47177a9311.95c5eb2f-e8a8-4f48-8bf2-fa2882f6c607.3dcda8a1-a6ef-4964-adcc-d0a5e1b8eebb"
 	vars := req.URL.Query()
-	token := &model.Token{
-		Key: vars.Get("key"),
+
+	token, err := h.ctrl.Get(ctx)
+	token.Key = vars.Get("key")
+
+	if err != nil {
+		log.Printf("Error getting token: %v\n", err)
 	}
 
-	if err := h.ctrl.Put(ctx, token); err != nil {
+	if err := h.ctrl.Put(ctx); err != nil {
 		log.Printf("Error putting token: %v\n", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return

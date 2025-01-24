@@ -15,6 +15,13 @@ type CompositeTokenRepository struct {
 	Secondary TokenRepository
 }
 
+func NewCompositeRepository(primary, secondary TokenRepository) *CompositeTokenRepository {
+	return &CompositeTokenRepository{
+		Primary:   primary,
+		Secondary: secondary,
+	}
+}
+
 func (c *CompositeTokenRepository) Get(ctx context.Context) (*model.Token, error) {
 	token, err := c.Primary.Get(ctx)
 	if err != nil {
@@ -24,12 +31,43 @@ func (c *CompositeTokenRepository) Get(ctx context.Context) (*model.Token, error
 	return token, nil
 }
 
-func (c *CompositeTokenRepository) Put(ctx context.Context, token *model.Token) error {
-	err := c.Primary.Put(ctx)
+func (c *CompositeTokenRepository) Put(ctx context.Context) error {
+	tokenPrimary, err := c.Primary.Get(ctx)
 	if err != nil {
-		log.Printf("Primary repository failed: %v, falling back to secondary", err)
-		err = c.Secondary.Put(ctx)
+		log.Printf("Primary repository failed: %v", err)
 		return err
+	}
+
+	tokenSecondary, err := c.Secondary.Get(ctx)
+	if err != nil {
+		log.Printf("Secondary repository failed: %v", err)
+		return err
+	}
+
+	if tokenPrimary.Key != "" {
+		err = c.Primary.Put(ctx)
+		if err != nil {
+			log.Printf("Primary repository failed: %v", err)
+			return err
+		}
+		tokenSecondary.Key = tokenPrimary.Key
+		err = c.Secondary.Put(ctx)
+		if err != nil {
+			log.Printf("Secondary repository failed: %v", err)
+			return err
+		}
+	} else if tokenSecondary.Key != "" {
+		err = c.Secondary.Put(ctx)
+		if err != nil {
+			log.Printf("Secondary repository failed: %v", err)
+			return err
+		}
+		tokenPrimary.Key = tokenSecondary.Key
+		err = c.Primary.Put(ctx)
+		if err != nil {
+			log.Printf("Secondary repository failed: %v", err)
+			return err
+		}
 	}
 
 	return err
