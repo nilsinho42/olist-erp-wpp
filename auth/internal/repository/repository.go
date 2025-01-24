@@ -3,6 +3,7 @@ package repository
 import (
 	"auth/pkg/model"
 	"context"
+	"fmt"
 	"log"
 )
 
@@ -32,7 +33,17 @@ func (c *CompositeTokenRepository) Get(ctx context.Context) (*model.Token, error
 }
 
 func (c *CompositeTokenRepository) Put(ctx context.Context) error {
+	key, ok := ctx.Value(model.ContextKey).(string)
+	if !ok {
+		return fmt.Errorf("key not found in context")
+	}
 	tokenPrimary, err := c.Primary.Get(ctx)
+	if err != nil {
+		log.Printf("Primary repository failed: %v", err)
+		return err
+	}
+	tokenPrimary.Key = key
+	err = c.Primary.Put(ctx)
 	if err != nil {
 		log.Printf("Primary repository failed: %v", err)
 		return err
@@ -43,31 +54,10 @@ func (c *CompositeTokenRepository) Put(ctx context.Context) error {
 		log.Printf("Secondary repository failed: %v", err)
 		return err
 	}
-
-	if tokenPrimary.Key != "" {
-		err = c.Primary.Put(ctx)
-		if err != nil {
-			log.Printf("Primary repository failed: %v", err)
-			return err
-		}
-		tokenSecondary.Key = tokenPrimary.Key
-		err = c.Secondary.Put(ctx)
-		if err != nil {
-			log.Printf("Secondary repository failed: %v", err)
-			return err
-		}
-	} else if tokenSecondary.Key != "" {
-		err = c.Secondary.Put(ctx)
-		if err != nil {
-			log.Printf("Secondary repository failed: %v", err)
-			return err
-		}
-		tokenPrimary.Key = tokenSecondary.Key
-		err = c.Primary.Put(ctx)
-		if err != nil {
-			log.Printf("Secondary repository failed: %v", err)
-			return err
-		}
+	tokenSecondary.Key = key
+	err = c.Secondary.Put(ctx)
+	if err != nil {
+		log.Printf("Secondary repository failed: %v", err)
 	}
 
 	return err

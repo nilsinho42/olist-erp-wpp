@@ -1,11 +1,13 @@
 package http
 
 import (
+	"context"
 	"encoding/json"
 	"log"
 	"net/http"
 
 	"auth/internal/controller"
+	"auth/pkg/model"
 )
 
 type Handler struct {
@@ -32,18 +34,12 @@ func (h *Handler) GetToken(w http.ResponseWriter, req *http.Request) {
 }
 
 func (h *Handler) PutToken(w http.ResponseWriter, req *http.Request) {
-	ctx := req.Context()
 	// example curl to validate this:
 	// curl -X PUT "http://localhost:8081/auth?key=34adade1-6ac4-4a5a-a394-2c47177a9311.95c5eb2f-e8a8-4f48-8bf2-fa2882f6c607.3dcda8a1-a6ef-4964-adcc-d0a5e1b8eebb"
 	vars := req.URL.Query()
 
-	token, err := h.ctrl.Get(ctx)
-	token.Key = vars.Get("key")
-
-	if err != nil {
-		log.Printf("Error getting token: %v\n", err)
-	}
-
+	ctx := req.Context()
+	ctx = context.WithValue(ctx, model.ContextKey, vars.Get("key"))
 	if err := h.ctrl.Put(ctx); err != nil {
 		log.Printf("Error putting token: %v\n", err)
 		w.WriteHeader(http.StatusInternalServerError)

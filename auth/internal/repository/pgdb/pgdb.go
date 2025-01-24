@@ -3,6 +3,7 @@
 package pgdb
 
 import (
+	encrypt "auth/internal/security"
 	"auth/pkg/model"
 	"context"
 	"database/sql"
@@ -43,6 +44,12 @@ func (t *TokenStoreDB) Get(ctx context.Context) (*model.Token, error) {
 		return nil, err
 	}
 
+	byte_token := []byte(t.data.Key)
+	decrypted_token, err := encrypt.DecryptAES(byte_token)
+	if err != nil {
+		return nil, err
+	}
+	t.data.Key = string(decrypted_token)
 	return t.data, nil
 }
 

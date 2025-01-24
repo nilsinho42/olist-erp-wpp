@@ -6,3 +6,7 @@ type Token struct {
 	Key        string `json:"key"`
 	Lastupdate string `json:"lastupdate"`
 }
+
+type contextKey string
+
+const ContextKey contextKey = "key"
