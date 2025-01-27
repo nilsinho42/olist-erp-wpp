@@ -16,7 +16,7 @@ Olist ERP is a cloud service that allows companies to manage their business. It 
 - Tokens are encrypted for security, with the encryption key stored in environmental variables.
 
 ## Next Steps
-- Continue development of main application
+- Get Supplier is ready, move to next one, Get Customer
 - To have a key value store with OLIST ERP ENDPOINTS
 
 ## Future Developments
@@ -48,6 +48,8 @@ One Time Authentication: https://accounts.tiny.com.br/realms/tiny/protocol/openi
 5. Store the token to the token repositories:
 curl -X PUT "http://localhost:8081/auth?key=600e26d3-2300-44cf-90e2-7d061238fa2e.7cf40efb-398f-45f3-b94f-1262d6216d45.3dcda8a1-a6ef-4964-adcc-d0a5e1b8eebb" 
 
+6. Test call to the OLIST ERP API:
+curl -X GET "https://api.tiny.com.br/public-api/v3/contatos?nome=aap" -H "Authorization: Bearer ACCESS TOKEN"
 
 # Markdown Cheatsheet
 
