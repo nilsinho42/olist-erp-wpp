@@ -1,0 +1,3 @@
+package supplier
+
+func manager()
