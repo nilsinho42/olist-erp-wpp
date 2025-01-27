@@ -39,19 +39,19 @@ func (c *CompositeTokenRepository) Put(ctx context.Context) error {
 	}
 	tokenPrimary, err := c.Primary.Get(ctx)
 	if err != nil {
-		log.Printf("Primary repository failed: %v", err)
+		log.Printf("Get token for primary repository put failed: %v", err)
 		return err
 	}
 	tokenPrimary.Key = key
 	err = c.Primary.Put(ctx)
 	if err != nil {
-		log.Printf("Primary repository failed: %v", err)
+		log.Printf("Primary repository put failed: %v", err)
 		return err
 	}
 
 	tokenSecondary, err := c.Secondary.Get(ctx)
 	if err != nil {
-		log.Printf("Secondary repository failed: %v", err)
+		log.Printf("Get token for secondary repository put failed: %v", err)
 		return err
 	}
 	tokenSecondary.Key = key

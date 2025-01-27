@@ -56,10 +56,15 @@ func (t *TokenStoreDB) Get(ctx context.Context) (*model.Token, error) {
 func (t *TokenStoreDB) Put(ctx context.Context) error {
 	t.Lock()
 	defer t.Unlock()
+
+	encrypted_token, err := encrypt.EncryptAES([]byte(t.data.Key))
+	if err != nil {
+		return err
+	}
+
 	t.data.Lastupdate = time.Now().Format(time.RFC3339)
-	fmt.Println("reached here")
 	insertQuery := `INSERT INTO tokens (key, lastupdate) VALUES ($1, $2)`
-	_, err := t.db.ExecContext(ctx, insertQuery, t.data.Key, t.data.Lastupdate)
+	_, err = t.db.ExecContext(ctx, insertQuery, encrypted_token, t.data.Lastupdate)
 	if err != nil {
 		return err
 	}
