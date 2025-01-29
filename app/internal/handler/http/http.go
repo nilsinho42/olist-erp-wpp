@@ -2,7 +2,6 @@ package http
 
 import (
 	"app/internal/controller"
-	"app/pkg/model"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -13,7 +12,7 @@ type Handler struct {
 	supplierController *controller.SupplierController
 	// productController   *controller.ProductController
 	// orderController     *controller.OrderController
-	// customerController  *controller.CustomerController
+	customerController *controller.CustomerController
 	// nfController        *controller.NFController
 	// financialController *controller.FinancialController
 }
@@ -22,7 +21,7 @@ func New(
 	supplierCtrl *controller.SupplierController,
 	// productCtrl *controller.ProductController,
 	// orderCtrl *controller.OrderController,
-	// customerCtrl *controller.CustomerController,
+	customerCtrl *controller.CustomerController,
 	// nfCtrl *controller.NFController,
 	// financialCtrl *controller.FinancialController,
 ) *Handler {
@@ -30,16 +29,13 @@ func New(
 		supplierController: supplierCtrl,
 		// productController:   productCtrl,
 		// orderController:     orderCtrl,
-		// customerController:  customerCtrl,
+		customerController: customerCtrl,
 		// nfController:        nfCtrl,
 		// financialController: financialCtrl,
 	}
 }
 
-func WriteResponse(w http.ResponseWriter, data []*model.Supplier, statusCode int) {
-	if len(data) == 0 {
-		return
-	}
+func WriteResponse(w http.ResponseWriter, data interface{}, statusCode int) {
 	jsonData, err := json.MarshalIndent(data, "", " ")
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -49,47 +45,6 @@ func WriteResponse(w http.ResponseWriter, data []*model.Supplier, statusCode int
 	w.WriteHeader(statusCode)
 	w.Write(jsonData)
 	// fmt.Printf("Suppliers: %s\n", jsonData)
-}
-
-func (h *Handler) GetSupplier(w http.ResponseWriter, req *http.Request) {
-	ctx := req.Context()
-	vars := req.URL.Query()
-
-	name := vars.Get("name")
-	if name != "" {
-		suppliers, err := h.supplierController.GetByName(ctx, name)
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-		}
-		WriteResponse(w, suppliers, http.StatusOK)
-		return
-	}
-
-	code := vars.Get("code")
-	if code != "" {
-		suppliers, err := h.supplierController.GetByCode(ctx, code)
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-		}
-		WriteResponse(w, suppliers, http.StatusOK)
-		return
-	}
-
-	cpfcnpj := vars.Get("cpfcnpj")
-	if cpfcnpj != "" {
-		cpfcnpj, err := validateCPFCNPJ(cpfcnpj)
-		if err != nil {
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
-
-		suppliers, err := h.supplierController.GetByCPFCNPJ(ctx, cpfcnpj)
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-		}
-		WriteResponse(w, suppliers, http.StatusOK)
-		return
-	}
 }
 
 func validateCPFCNPJ(input string) (string, error) {

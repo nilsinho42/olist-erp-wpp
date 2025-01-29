@@ -41,6 +41,7 @@ func (t *TokenStoreFile) Get(_ context.Context) (*model.Token, error) {
 	if err != nil {
 		return t.data, err
 	}
+
 	defer file.Close()
 	err = json.NewDecoder(file).Decode(&t.data)
 	if err != nil {

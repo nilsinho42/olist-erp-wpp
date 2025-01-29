@@ -26,7 +26,7 @@ Olist ERP is a cloud service that allows companies to manage their business. It 
 1. Get one time authentication code:
 One Time Authentication: https://accounts.tiny.com.br/realms/tiny/protocol/openid-connect/auth?client_id=tiny-api-d0b3e47d766765eedc8dabe8f90eba37474257c3-1737037931&redirect_uri=https://6c86-2804-10f8-4356-8600-64eb-2e6e-a771-dbed.ngrok-free.app&scope=openid&response_type=code
 
-2. Code returned after authentication: e6184010-cc36-4c1a-a2b7-c11c321427f5.a588b438-68f8-43a4-b567-961aafd3ee1b.3dcda8a1-a6ef-4964-adcc-d0a5e1b8eebb
+2. Code returned after authentication: ab89cdc1-c622-4d8e-bc7e-09a861ba03b4.45e98eb0-b92d-4201-aa0c-afa711e49bbd.3dcda8a1-a6ef-4964-adcc-d0a5e1b8eebb
 
 3. Use code to get the access token: curl --location 'https://accounts.tiny.com.br/realms/tiny/protocol/openid-connect/token' \
 --header 'Content-Type: application/x-www-form-urlencoded' \
@@ -34,7 +34,7 @@ One Time Authentication: https://accounts.tiny.com.br/realms/tiny/protocol/openi
 --data-urlencode 'client_id=tiny-api-d0b3e47d766765eedc8dabe8f90eba37474257c3-1737037931' \
 --data-urlencode 'client_secret=bpSCcOcdxN8tftz4X8vRRceGd1FTguyw' \
 --data-urlencode 'redirect_uri=https://6c86-2804-10f8-4356-8600-64eb-2e6e-a771-dbed.ngrok-free.app' \
---data-urlencode 'code=CODE'
+--data-urlencode 'code=ab89cdc1-c622-4d8e-bc7e-09a861ba03b4.45e98eb0-b92d-4201-aa0c-afa711e49bbd.3dcda8a1-a6ef-4964-adcc-d0a5e1b8eebb'
 
 4. Get the access token from the response: 
 {"access_token":"ACCESS_TOKEN",
@@ -46,7 +46,7 @@ One Time Authentication: https://accounts.tiny.com.br/realms/tiny/protocol/openi
 "scope":"openid email offline_access"}
 
 5. Store the token to the token repositories:
-curl -X PUT "http://localhost:8081/auth?key=600e26d3-2300-44cf-90e2-7d061238fa2e.7cf40efb-398f-45f3-b94f-1262d6216d45.3dcda8a1-a6ef-4964-adcc-d0a5e1b8eebb" 
+curl -X PUT "http://localhost:8081/auth?key=eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJnWXk2cDhkQkU0dDBkZkFvU0J4WkJvbDBkYmpTcEF5Z3FpQm1vY3pMcXJVIn0.eyJleHAiOjE3MzgxNjA2MDUsImlhdCI6MTczODE0NjIwNSwiYXV0aF90aW1lIjoxNzM4MTQ2MTc3LCJqdGkiOiIwODRjMDA5OC1iYzQ4LTQ0YjItOTBjYi0xM2RmNmMxZjVlNzgiLCJpc3MiOiJodHRwczovL2FjY291bnRzLnRpbnkuY29tLmJyL3JlYWxtcy90aW55IiwiYXVkIjoidGlueS1hcGkiLCJzdWIiOiJjOGYxYjlhOC0xMzViLTRmMDEtYmQ4Ni1lZjE3YTE5NGZkZjUiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJ0aW55LWFwaS1kMGIzZTQ3ZDc2Njc2NWVlZGM4ZGFiZThmOTBlYmEzNzQ3NDI1N2MzLTE3MzcwMzc5MzEiLCJzZXNzaW9uX3N0YXRlIjoiNDVlOThlYjAtYjkyZC00MjAxLWFhMGMtYWZhNzExZTQ5YmJkIiwic2NvcGUiOiJvcGVuaWQgZW1haWwgb2ZmbGluZV9hY2Nlc3MiLCJzaWQiOiI0NWU5OGViMC1iOTJkLTQyMDEtYWEwYy1hZmE3MTFlNDliYmQiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsInJvbGVzIjp7InRpbnktYXBpIjpbIm1hcmNhcy1lc2NyaXRhIiwicGVkaWRvcy1sZWl0dXJhIiwiZXN0b3F1ZS1sZWl0dXJhIiwibm90YXMtZmlzY2Fpcy1lc2NyaXRhIiwiY29udGF0b3MtZXhjbHVzYW8iLCJpbmZvLWNvbnRhLWxlaXR1cmEiLCJwcm9kdXRvcy1leGNsdXNhbyIsImxpc3RhLXByZWNvcy1sZWl0dXJhIiwiY2F0ZWdvcmlhcy1sZWl0dXJhIiwiZXhwZWRpY2FvLWV4Y2x1c2FvIiwiZm9ybWEtZW52aW8tbGVpdHVyYSIsInNlcGFyYWNhby1sZWl0dXJhIiwicHJvZHV0b3MtbGVpdHVyYSIsImV4cGVkaWNhby1sZWl0dXJhIiwib3JkZW0tY29tcHJhLWxlaXR1cmEiLCJjb250YXRvcy1lc2NyaXRhIiwibm90YXMtZmlzY2Fpcy1sZWl0dXJhIiwicGVkaWRvcy1lc2NyaXRhIiwiY29udGFzLXBhZ2FyLWVzY3JpdGEiLCJvcmRlbS1zZXJ2aWNvLWxlaXR1cmEiLCJjb250YXMtcGFnYXItbGVpdHVyYSIsImV4cGVkaWNhby1lc2NyaXRhIiwiY29udGFzLXJlY2ViZXItbGVpdHVyYSIsInNlcGFyYWNhby1lc2NyaXRhIiwibWFyY2FzLWxlaXR1cmEiLCJmb3JtYS1wYWdhbWVudG8tbGVpdHVyYSIsImludGVybWVkaWFkb3Jlcy1sZWl0dXJhIiwiZ2F0aWxob3MiLCJlc3RvcXVlLWVzY3JpdGEiLCJwcm9kdXRvcy1lc2NyaXRhIiwib3JkZW0tc2Vydmljby1lc2NyaXRhIiwiY29udGFzLXJlY2ViZXItZXNjcml0YSIsImNvbnRhdG9zLWxlaXR1cmEiLCJwZWRpZG9zLWV4Y2x1c2FvIiwib3JkZW0tY29tcHJhLWVzY3JpdGEiLCJub3Rhcy1maXNjYWlzLWV4Y2x1c2FvIl19LCJlbWFpbCI6ImNvbWVyY2lhbEBzZWZmZXIuY29tLmJyIn0.d5hC_d14RhAYnvTIW6VcSXcIX-XOKkGGv25-xMCAqQHQdxZzVIsct4-ti0cASoYEMSGvi7Q77qGJHh--LsSfWLeg3vjywN5dK93ASiDA_j3b6Sa2NHnW2q_aPyqZFtPbtGANRRZPZqUpgipTN1mtblWNpEz50crJnTP_1G-2ED0Io1_hjlzIro8JEg9zFl-6UD14FjRndo0vH8dBuDWR3iPsS6AZsl3RhINdhPKzuGoYPoOQJ-C8eBkcyYFpzrQuPM-cufAddW6bWtEpRCui8tFOGruSzimyrP89745EjgO4trSyhTGnRVrLk1-zN-YLj6L0IPhKtp8EPFnSmWESdg" 
 
 6. Test call to the OLIST ERP API:
 curl -X GET "https://api.tiny.com.br/public-api/v3/contatos?nome=aap" -H "Authorization: Bearer ACCESS TOKEN"

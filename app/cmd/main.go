@@ -38,7 +38,7 @@ func authenticate() error {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(string(bytes))
+	fmt.Printf("Token: %s", string(bytes))
 
 	// Store the token in a global variable
 	authToken = token.Key
@@ -46,24 +46,25 @@ func authenticate() error {
 }
 
 func main() {
+
 	authenticate()
 	// Initialize controllers
 	supplierCtrl := controller.NewSupplierController(authToken)
 	// productCtrl := controller.NewProductController()
 	// orderCtrl := controller.NewOrderController()
-	// customerCtrl := controller.NewCustomerController()
+	customerCtrl := controller.NewCustomerController(authToken)
 	// nfCtrl := controller.NewNFController()
 	// financialCtrl := controller.NewFinancialController()
 
 	// Initialize handler with controllers
 	// h := httphandler.New(supplierCtrl, productCtrl, orderCtrl, customerCtrl, nfCtrl, financialCtrl)
-	h := httphandler.New(supplierCtrl)
+	h := httphandler.New(supplierCtrl, customerCtrl)
 	r := mux.NewRouter()
 
 	r.HandleFunc("/v1/supplier", h.GetSupplier).Methods("GET")
 	// r.HandleFunc("/v1/product", h.GetProduct).Methods("GET")
 	// r.HandleFunc("/v1/order", h.GetOrder).Methods("GET")
-	// r.HandleFunc("/v1/customer", h.GetCustomer).Methods("GET")
+	r.HandleFunc("/v1/customer", h.GetCustomer).Methods("GET")
 	// r.HandleFunc("/v1/nf", h.GetNF).Methods("GET")
 	// r.HandleFunc("/v1/financial", h.GetFinancial).Methods("GET")
 
