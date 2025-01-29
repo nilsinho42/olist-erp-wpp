@@ -10,26 +10,28 @@ import (
 
 type Handler struct {
 	supplierController *controller.SupplierController
-	// productController   *controller.ProductController
-	// orderController     *controller.OrderController
 	customerController *controller.CustomerController
+	orderController    *controller.OrderController
+
+	// productController   *controller.ProductController
 	// nfController        *controller.NFController
 	// financialController *controller.FinancialController
 }
 
 func New(
 	supplierCtrl *controller.SupplierController,
-	// productCtrl *controller.ProductController,
-	// orderCtrl *controller.OrderController,
 	customerCtrl *controller.CustomerController,
+	orderCtrl *controller.OrderController,
+
+	// productCtrl *controller.ProductController,
 	// nfCtrl *controller.NFController,
 	// financialCtrl *controller.FinancialController,
 ) *Handler {
 	return &Handler{
 		supplierController: supplierCtrl,
-		// productController:   productCtrl,
-		// orderController:     orderCtrl,
 		customerController: customerCtrl,
+		orderController:    orderCtrl,
+		// productController:   productCtrl,
 		// nfController:        nfCtrl,
 		// financialController: financialCtrl,
 	}

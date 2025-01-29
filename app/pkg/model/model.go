@@ -41,20 +41,6 @@ type Product struct {
 	GTIN             string  `json:"gtin"`
 }
 
-type Order struct {
-	ID              int     `json:"id"`
-	NumeroPedido    string  `json:"numeroPedido"`
-	NumeroEcommerce string  `json:"numeroEcommerce"`
-	DataPedido      Data    `json:"dataPedido"`
-	DataPrevista    Data    `json:"dataPrevista"`
-	NomeCliente     string  `json:"nomeCliente"`
-	Valor           float64 `json:"valor"`
-	IDVendedor      int     `json:"idVendedor"`
-	NomeVendedor    string  `json:"nomeVendedor"`
-	Situacao        string  `json:"situacao"`
-	CodigoRastreio  Code    `json:"codigoRastreio"`
-}
-
 type NF struct {
 }
 

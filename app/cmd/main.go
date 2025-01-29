@@ -51,19 +51,19 @@ func main() {
 	// Initialize controllers
 	supplierCtrl := controller.NewSupplierController(authToken)
 	// productCtrl := controller.NewProductController()
-	// orderCtrl := controller.NewOrderController()
+	orderCtrl := controller.NewOrderController(authToken)
 	customerCtrl := controller.NewCustomerController(authToken)
 	// nfCtrl := controller.NewNFController()
 	// financialCtrl := controller.NewFinancialController()
 
 	// Initialize handler with controllers
 	// h := httphandler.New(supplierCtrl, productCtrl, orderCtrl, customerCtrl, nfCtrl, financialCtrl)
-	h := httphandler.New(supplierCtrl, customerCtrl)
+	h := httphandler.New(supplierCtrl, customerCtrl, orderCtrl)
 	r := mux.NewRouter()
 
 	r.HandleFunc("/v1/supplier", h.GetSupplier).Methods("GET")
 	// r.HandleFunc("/v1/product", h.GetProduct).Methods("GET")
-	// r.HandleFunc("/v1/order", h.GetOrder).Methods("GET")
+	r.HandleFunc("/v1/order", h.GetOrder).Methods("GET")
 	r.HandleFunc("/v1/customer", h.GetCustomer).Methods("GET")
 	// r.HandleFunc("/v1/nf", h.GetNF).Methods("GET")
 	// r.HandleFunc("/v1/financial", h.GetFinancial).Methods("GET")
