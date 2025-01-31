@@ -163,16 +163,14 @@ func parseItensFromOrderResponse(c *OrderController, apiResponse model.OrderResp
 	for _, item := range apiResponse.Itens {
 		jsonData, _ := json.MarshalIndent(item, "", "  ")
 		fmt.Printf("Order: %s\n", jsonData)
-
 		order := &model.Order{
 			ID:           item.ID,
 			Situacao:     item.Situacao,
 			NumeroPedido: item.NumeroPedido,
-			Ecommerce:    item.Ecommerce,
 			DataCriacao:  item.DataCriacao,
 			DataPrevista: item.DataPrevista,
-			Cliente: model.Customer{
-				Company: model.Company{
+			Cliente: model.CustomerOrderEnpoint{
+				CompanyOrderEndpoint: model.CompanyOrderEndpoint{
 					TipoCadastro: "CLIENTE",
 					ID:           item.Cliente.ID,
 					Codigo:       model.Code(item.Cliente.Codigo),

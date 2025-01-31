@@ -150,11 +150,33 @@ func (c *CustomerController) GetByCPFCNPJ(ctx context.Context, cpfcnpj string) (
 	return customers, nil
 }
 
+func (c *CustomerController) GetNameFromCPFCNPJ(ctx context.Context, cpfcnpj string) (customerName string) {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	customers, err := c.GetByCPFCNPJ(ctx, cpfcnpj)
+	if err != nil || len(customers) == 0 {
+		return ""
+	}
+	return customers[0].CompanyCustomerEndpoint.RazaoSocial
+}
+
+func (c *CustomerController) GetNameFromPartialName(ctx context.Context, partialName string) (customerName string) {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	customers, err := c.GetByName(ctx, partialName)
+	if err != nil || len(customers) == 0 {
+		return ""
+	}
+	return customers[0].CompanyCustomerEndpoint.RazaoSocial
+}
+
 func parseItensFromCustomerResponse(c *CustomerController, apiResponse model.CustomerResponse, key string) []*model.Customer {
 	var customers []*model.Customer
 	for _, item := range apiResponse.Itens {
 		customer := &model.Customer{
-			Company: model.Company{
+			CompanyCustomerEndpoint: model.CompanyCustomerEndpoint{
 				TipoCadastro: "CONSUMIDOR",
 				ID:           item.ID,
 				Codigo:       model.Code(item.Codigo),

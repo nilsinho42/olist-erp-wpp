@@ -154,7 +154,7 @@ func parseItensFromSupplierResponse(c *SupplierController, apiResponse model.Sup
 	var suppliers []*model.Supplier
 	for _, item := range apiResponse.Itens {
 		supplier := &model.Supplier{
-			Company: model.Company{
+			CompanySupplierEndpoint: model.CompanySupplierEndpoint{
 				TipoCadastro: "FORNECEDOR",
 				ID:           item.ID,
 				Codigo:       model.Code(item.Codigo),

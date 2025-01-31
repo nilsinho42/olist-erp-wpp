@@ -1,36 +1,20 @@
 package model
 
-type Vendedor struct {
-	ID   int    `json:"id"`
-	Nome string `json:"nome"`
-}
-
-type FormaEnvio struct {
-	ID   int    `json:"id"`
-	Nome string `json:"nome"`
-}
-
-type Transportador struct {
-	ID                 int        `json:"id"`
-	Nome               string     `json:"nome"`
-	FretePorConta      string     `json:"fretePorConta"`
-	FormaEnvio         FormaEnvio `json:"formaEnvio"`
-	FormaFrete         string     `json:"formaFrete"`
-	CodigoRastreamento string     `json:"codigoRastreamento"`
-	UrlRastreamento    string     `json:"urlRastreamento"`
+type CustomerOrderEnpoint struct {
+	CompanyOrderEndpoint
+	NomeVendedor string `json:"nomeVendedor"`
 }
 
 type Order struct {
-	ID            int           `json:"id"`
-	Situacao      int           `json:"situacao"`
-	NumeroPedido  int           `json:"numeroPedido"`
-	Ecommerce     string        `json:"ecommerce"`
-	DataCriacao   string        `json:"dataCriacao"`
-	DataPrevista  string        `json:"dataPrevista"`
-	Cliente       Customer      `json:"cliente"`
-	Valor         string        `json:"valor"`
-	Vendedor      Vendedor      `json:"vendedor"`
-	Transportador Transportador `json:"transportador"`
+	ID            int                  `json:"id"`
+	Situacao      int                  `json:"situacao"`
+	NumeroPedido  int                  `json:"numeroPedido"`
+	DataCriacao   string               `json:"dataCriacao"`
+	DataPrevista  string               `json:"dataPrevista"`
+	Cliente       CustomerOrderEnpoint `json:"cliente"`
+	Valor         string               `json:"valor"`
+	Vendedor      Vendedor             `json:"vendedor"`
+	Transportador Transportador        `json:"transportador"`
 }
 
 type Paginacao struct {
@@ -42,4 +26,17 @@ type Paginacao struct {
 type OrderResponse struct {
 	Itens     []Order   `json:"itens"`
 	Paginacao Paginacao `json:"paginacao"`
+}
+
+type CompanyOrderEndpoint struct {
+	TipoCadastro string   `json:"tipoCadastro"`
+	ID           int      `json:"id"`
+	Codigo       Code     `json:"codigo"`
+	TipoPessoa   string   `json:"tipoPessoa"`
+	RazaoSocial  string   `json:"nome"`
+	NomeFantasia string   `json:"fantasia"`
+	CNPJCPF      CNPJCPF  `json:"cpfcnpj"`
+	Endereco     Endereco `json:"endereco"`
+	Email        Email    `json:"email"`
+	Telefone     Telefone `json:"telefone"`
 }

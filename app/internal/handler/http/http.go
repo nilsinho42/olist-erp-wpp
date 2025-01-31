@@ -9,10 +9,11 @@ import (
 )
 
 type Handler struct {
-	supplierController *controller.SupplierController
-	customerController *controller.CustomerController
-	orderController    *controller.OrderController
-
+	supplierController          *controller.SupplierController
+	customerController          *controller.CustomerController
+	orderController             *controller.OrderController
+	accountReceivableController *controller.AccountReceivableController
+	accountPayableController    *controller.AccountPayableController
 	// productController   *controller.ProductController
 	// nfController        *controller.NFController
 	// financialController *controller.FinancialController
@@ -22,15 +23,19 @@ func New(
 	supplierCtrl *controller.SupplierController,
 	customerCtrl *controller.CustomerController,
 	orderCtrl *controller.OrderController,
+	accountReceivableCtrl *controller.AccountReceivableController,
+	accountPayableCtrl *controller.AccountPayableController,
 
 	// productCtrl *controller.ProductController,
 	// nfCtrl *controller.NFController,
 	// financialCtrl *controller.FinancialController,
 ) *Handler {
 	return &Handler{
-		supplierController: supplierCtrl,
-		customerController: customerCtrl,
-		orderController:    orderCtrl,
+		supplierController:          supplierCtrl,
+		customerController:          customerCtrl,
+		orderController:             orderCtrl,
+		accountReceivableController: accountReceivableCtrl,
+		accountPayableController:    accountPayableCtrl,
 		// productController:   productCtrl,
 		// nfController:        nfCtrl,
 		// financialController: financialCtrl,

@@ -2,7 +2,7 @@ package model
 
 // Using composition to create Supplier and Customer
 type Supplier struct {
-	Company
+	CompanySupplierEndpoint
 }
 
 type SupplierResponse struct {
@@ -41,4 +41,17 @@ type SupplierResponse struct {
 		Offset int `json:"offset"`
 		Total  int `json:"total"`
 	} `json:"paginacao"`
+}
+
+type CompanySupplierEndpoint struct {
+	TipoCadastro string   `json:"tipoCadastro"`
+	ID           int      `json:"id"`
+	Codigo       Code     `json:"codigo"`
+	TipoPessoa   string   `json:"tipoPessoa"`
+	RazaoSocial  string   `json:"razaoSocial"`
+	NomeFantasia string   `json:"nomeFantasia"`
+	CNPJCPF      CNPJCPF  `json:"cnpjCpf"`
+	Endereco     Endereco `json:"endereco"`
+	Email        Email    `json:"email"`
+	Telefone     Telefone `json:"telefone"`
 }

@@ -7,7 +7,7 @@ type Code string
 type Data string
 
 type Endereco struct {
-	Rua         string `json:"rua"`
+	Rua         string `json:"endereco"`
 	Numero      string `json:"numero"`
 	Complemento string `json:"complemento"`
 	Bairro      string `json:"bairro"`
@@ -18,19 +18,6 @@ type Endereco struct {
 }
 
 // Supplier struct with custom types
-type Company struct {
-	TipoCadastro string   `json:"tipoCadastro"`
-	ID           int      `json:"id"`
-	Codigo       Code     `json:"codigo"`
-	TipoPessoa   string   `json:"tipoPessoa"`
-	RazaoSocial  string   `json:"razaoSocial"`
-	NomeFantasia string   `json:"nomeFantasia"`
-	CNPJCPF      CNPJCPF  `json:"cnpjCpf"`
-	Endereco     Endereco `json:"endereco"`
-	Email        Email    `json:"email"`
-	Telefone     Telefone `json:"telefone"`
-}
-
 type Product struct {
 	DataCriacao      string  `json:"dataCriacao"`
 	NomeProduto      string  `json:"nomeProduto"`
@@ -44,14 +31,22 @@ type Product struct {
 type NF struct {
 }
 
-type AccountReceivable struct {
-	NomeCliente string  `json:"nomeCliente"`
-	Doc         string  `json:"doc"`
-	Detalhes    string  `json:"detalhes"`
-	Vencimento  Data    `json:"vencimento"`
-	Situacao    string  `json:"situacao"`
-	Valor       float64 `json:"valor"`
+type Vendedor struct {
+	ID   int    `json:"id"`
+	Nome string `json:"nome"`
 }
 
-type AccountPayable struct {
+type FormaEnvio struct {
+	ID   int    `json:"id"`
+	Nome string `json:"nome"`
+}
+
+type Transportador struct {
+	ID                 int        `json:"id"`
+	Nome               string     `json:"nome"`
+	FretePorConta      string     `json:"fretePorConta"`
+	FormaEnvio         FormaEnvio `json:"formaEnvio"`
+	FormaFrete         string     `json:"formaFrete"`
+	CodigoRastreamento string     `json:"codigoRastreamento"`
+	UrlRastreamento    string     `json:"urlRastreamento"`
 }
