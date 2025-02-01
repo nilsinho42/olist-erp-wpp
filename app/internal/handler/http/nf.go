@@ -5,27 +5,27 @@ import (
 	"net/http"
 )
 
-func (h *Handler) GetCustomer(w http.ResponseWriter, req *http.Request) {
+func (h *Handler) GetNF(w http.ResponseWriter, req *http.Request) {
 	ctx := req.Context()
 	vars := req.URL.Query()
 
 	name := vars.Get("name")
 	if name != "" {
-		customers, err := h.customerController.GetByName(ctx, name)
+		nfs, err := h.nfController.GetByName(ctx, name)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 		}
-		WriteResponse(w, customers, http.StatusOK)
+		WriteResponse(w, nfs, http.StatusOK)
 		return
 	}
 
-	code := vars.Get("code")
-	if code != "" {
-		customers, err := h.customerController.GetByCode(ctx, code)
+	numero := vars.Get("numero")
+	if numero != "" {
+		nfs, err := h.nfController.GetByNumero(ctx, numero)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 		}
-		WriteResponse(w, customers, http.StatusOK)
+		WriteResponse(w, nfs, http.StatusOK)
 		return
 	}
 
@@ -37,11 +37,11 @@ func (h *Handler) GetCustomer(w http.ResponseWriter, req *http.Request) {
 			return
 		}
 
-		customers, err := h.customerController.GetByCPFCNPJ(ctx, cpfcnpj)
+		nfs, err := h.nfController.GetByCPFCNPJ(ctx, cpfcnpj)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 		}
-		WriteResponse(w, customers, http.StatusOK)
+		WriteResponse(w, nfs, http.StatusOK)
 		return
 	}
 }

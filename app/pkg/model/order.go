@@ -17,12 +17,6 @@ type Order struct {
 	Transportador Transportador        `json:"transportador"`
 }
 
-type Paginacao struct {
-	Limit  int `json:"limit"`
-	Offset int `json:"offset"`
-	Total  int `json:"total"`
-}
-
 type OrderResponse struct {
 	Itens     []Order   `json:"itens"`
 	Paginacao Paginacao `json:"paginacao"`

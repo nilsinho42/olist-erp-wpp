@@ -1,6 +1,7 @@
 package http
 
 import (
+	"app/pkg/model"
 	"net/http"
 )
 
@@ -30,7 +31,7 @@ func (h *Handler) GetOrder(w http.ResponseWriter, req *http.Request) {
 
 	cpfcnpj := vars.Get("cpfcnpj")
 	if cpfcnpj != "" {
-		cpfcnpj, err := validateCPFCNPJ(cpfcnpj)
+		cpfcnpj, err := model.ValidateCPFCNPJ(cpfcnpj)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
 			return

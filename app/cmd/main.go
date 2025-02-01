@@ -54,6 +54,7 @@ func main() {
 	customerCtrl := controller.NewCustomerController(authToken)
 	accountReceivableCtrl := controller.NewAccountReceivableController(authToken)
 	accountPayableCtrl := controller.NewAccountPayableController(authToken)
+	nfCtrl := controller.NewNFController(authToken)
 
 	// nfCtrl := controller.NewNFController()
 	// financialCtrl := controller.NewFinancialController()
@@ -61,13 +62,14 @@ func main() {
 
 	// Initialize handler with controllers
 	// h := httphandler.New(supplierCtrl, productCtrl, orderCtrl, customerCtrl, nfCtrl, financialCtrl)
-	h := httphandler.New(supplierCtrl, customerCtrl, orderCtrl, accountReceivableCtrl, accountPayableCtrl)
+	h := httphandler.New(supplierCtrl, customerCtrl, orderCtrl, accountReceivableCtrl, accountPayableCtrl, nfCtrl)
 	r := mux.NewRouter()
 
 	r.HandleFunc("/v1/supplier", h.GetSupplier).Methods("GET")
 	r.HandleFunc("/v1/order", h.GetOrder).Methods("GET")
 	r.HandleFunc("/v1/customer", h.GetCustomer).Methods("GET")
 	r.HandleFunc("/v1/boletos", h.GetAccountsReceivable).Methods("GET")
+	r.HandleFunc("/v1/nf", h.GetNF).Methods("GET")
 
 	// r.HandleFunc("/v1/product", h.GetProduct).Methods("GET")
 	// r.HandleFunc("/v1/nf", h.GetNF).Methods("GET")

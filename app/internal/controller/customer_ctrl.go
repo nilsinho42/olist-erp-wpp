@@ -172,6 +172,22 @@ func (c *CustomerController) GetNameFromPartialName(ctx context.Context, partial
 	return customers[0].CompanyCustomerEndpoint.RazaoSocial
 }
 
+func (c *CustomerController) GetCPFCNPJFromPartialName(ctx context.Context, partialName string) (customerName string) {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	customers, err := c.GetByName(ctx, partialName)
+	if err != nil || len(customers) == 0 {
+		return ""
+	}
+
+	cpfcnpj, err := model.ValidateCPFCNPJ(string(customers[0].CompanyCustomerEndpoint.CNPJCPF))
+	if err != nil {
+		return ""
+	}
+	return cpfcnpj
+}
+
 func parseItensFromCustomerResponse(c *CustomerController, apiResponse model.CustomerResponse, key string) []*model.Customer {
 	var customers []*model.Customer
 	for _, item := range apiResponse.Itens {
