@@ -127,6 +127,19 @@ func (c *NFController) GetByCPFCNPJ(ctx context.Context, cpfcnpj string) ([]*mod
 	return nfs, nil
 }
 
+var nfSituacaoMap = map[string]string{
+	"1":  "Pendente",
+	"2":  "Emitida",
+	"3":  "Cancelada",
+	"4":  "Enviada Aguardando Recibo",
+	"5":  "Rejeitada",
+	"6":  "Autorizada",
+	"7":  "Emitida Danfe",
+	"8":  "Registrada",
+	"9":  "Enviada Aguardando Protocolo",
+	"10": "Denegada",
+}
+
 func parseItensFromNFResponse(c *NFController, apiResponse model.NFResponse, key string) []*model.NF {
 	fmt.Println("Reached parseItensFromNFResponse")
 	var nfs []*model.NF
@@ -134,9 +147,34 @@ func parseItensFromNFResponse(c *NFController, apiResponse model.NFResponse, key
 		jsonData, _ := json.MarshalIndent(item, "", "  ")
 		fmt.Printf("NF: %s\n", jsonData)
 
+		situacaoDesc, ok := nfSituacaoMap[item.Situacao]
+		if !ok {
+			situacaoDesc = "Unknown"
+		}
+
+		id := item.ID
+		url := fmt.Sprintf("%s/notas/%d/link", OlistERPURL, id)
+		req, err := http.NewRequest("GET", url, nil)
+		if err != nil {
+			fmt.Printf("Error: %v\n", err)
+			continue
+		}
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", c.token))
+		client := &http.Client{}
+		resp, err := client.Do(req)
+		if err != nil || resp.StatusCode != http.StatusOK {
+			continue
+		}
+		defer resp.Body.Close()
+
+		// Parse the response
+		var secondaryResponse model.NFLink
+		if err := json.NewDecoder(resp.Body).Decode(&secondaryResponse); err != nil {
+			continue
+		}
 		nf := &model.NF{
 			ID:          item.ID,
-			Situacao:    item.Situacao,
+			Situacao:    situacaoDesc,
 			Numero:      item.Numero,
 			Serie:       item.Serie,
 			ChaveAcesso: item.ChaveAcesso,
@@ -169,6 +207,7 @@ func parseItensFromNFResponse(c *NFController, apiResponse model.NFResponse, key
 			CodigoRastreamento: item.CodigoRastreamento,
 			UrlRastreamento:    item.UrlRastreamento,
 			FretePorConta:      item.FretePorConta,
+			Link:               secondaryResponse.Link,
 		}
 		nfs = append(nfs, nf)
 	}

@@ -13,11 +13,16 @@ type NF struct {
 	CodigoRastreamento string               `json:"codigoRastreamento"`
 	UrlRastreamento    string               `json:"urlRastreamento"`
 	FretePorConta      string               `json:"fretePorConta"`
+	Link               string               `json:"link"`
 }
 
 type NFResponse struct {
 	Itens     []NF      `json:"itens"`
 	Paginacao Paginacao `json:"paginacao"`
+}
+
+type NFLink struct {
+	Link string `json:"link"`
 }
 
 /*

@@ -157,15 +157,34 @@ func (c *OrderController) GetByCPFCNPJ(ctx context.Context, cpfcnpj string) ([]*
 	return orders, nil
 }
 
+var orderSituacaoMap = map[int]string{
+	0: "Aberta",
+	1: "Faturada",
+	2: "Cancelada",
+	3: "Aprovada",
+	4: "Preparando Envio",
+	5: "Enviada",
+	6: "Entregue",
+	7: "Pronto Envio",
+	8: "Dados Incompletos",
+	9: "Nao Entregue",
+}
+
 func parseItensFromOrderResponse(c *OrderController, apiResponse model.OrderResponse, key string) []*model.Order {
 	fmt.Println("Reached parseItensFromOrderResponse")
 	var orders []*model.Order
 	for _, item := range apiResponse.Itens {
 		jsonData, _ := json.MarshalIndent(item, "", "  ")
 		fmt.Printf("Order: %s\n", jsonData)
+
+		situacaoDesc, ok := orderSituacaoMap[item.Situacao]
+		if !ok {
+			situacaoDesc = "Unknown"
+		}
+
 		order := &model.Order{
 			ID:           item.ID,
-			Situacao:     item.Situacao,
+			Situacao:     situacaoDesc,
 			NumeroPedido: item.NumeroPedido,
 			DataCriacao:  item.DataCriacao,
 			DataPrevista: item.DataPrevista,

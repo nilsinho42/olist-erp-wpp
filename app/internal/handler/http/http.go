@@ -13,8 +13,7 @@ type Handler struct {
 	accountReceivableController *controller.AccountReceivableController
 	accountPayableController    *controller.AccountPayableController
 	nfController                *controller.NFController
-
-	// productController   *controller.ProductController
+	productController           *controller.ProductController
 	// financialController *controller.FinancialController
 }
 
@@ -25,8 +24,7 @@ func New(
 	accountReceivableCtrl *controller.AccountReceivableController,
 	accountPayableCtrl *controller.AccountPayableController,
 	nfCtrl *controller.NFController,
-
-	// productCtrl *controller.ProductController,
+	productCtrl *controller.ProductController,
 	// financialCtrl *controller.FinancialController,
 ) *Handler {
 	return &Handler{
@@ -36,7 +34,7 @@ func New(
 		accountReceivableController: accountReceivableCtrl,
 		accountPayableController:    accountPayableCtrl,
 		nfController:                nfCtrl,
-		// productController:   productCtrl,
+		productController:           productCtrl,
 		// financialController: financialCtrl,
 	}
 }

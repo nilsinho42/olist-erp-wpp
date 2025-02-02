@@ -23,15 +23,6 @@ type Endereco struct {
 }
 
 // Supplier struct with custom types
-type Product struct {
-	DataCriacao      string  `json:"dataCriacao"`
-	NomeProduto      string  `json:"nomeProduto"`
-	Codigo           Code    `json:"codigo"`
-	Preco            float64 `json:"preco"`
-	PrecoPromocional float64 `json:"precoPromocional"`
-	Unidade          string  `json:"unidade"`
-	GTIN             string  `json:"gtin"`
-}
 
 type Vendedor struct {
 	ID   int    `json:"id"`
