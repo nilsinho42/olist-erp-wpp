@@ -3,6 +3,7 @@ package http
 import (
 	"app/internal/controller"
 	"encoding/json"
+	"fmt"
 	"net/http"
 )
 
@@ -43,10 +44,10 @@ func WriteResponse(w http.ResponseWriter, data interface{}, statusCode int) {
 	jsonData, err := json.MarshalIndent(data, "", " ")
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
+		fmt.Printf("Failed to marshal data: %s\n", err)
+	} else {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(statusCode)
+		w.Write(jsonData)
 	}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(statusCode)
-	w.Write(jsonData)
-	// fmt.Printf("Suppliers: %s\n", jsonData)
 }

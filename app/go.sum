@@ -2,3 +2,5 @@ github.com/gorilla/mux v1.8.1 h1:TuBL49tXwgrFYWhqrNgrUNEY92u81SPhu7sTdzQEiWY=
 github.com/gorilla/mux v1.8.1/go.mod h1:AKf9I4AEqPTmMytcMc0KkNouC66V3BtZ4qD5fmWSiMQ=
 github.com/nilsinho42/OlistERPMediator v0.0.0-20250122123108-3b4190771d86 h1:24sekha9lL705/vPDW9Hzq+Djvj1DfDD+1SBly4pljY=
 github.com/nilsinho42/OlistERPMediator v0.0.0-20250122123108-3b4190771d86/go.mod h1:ahHcojb9PQuoBBi6T0m8BWKgC3xh+i6/B0s9kpWwGg4=
+golang.org/x/exp v0.0.0-20250128182459-e0ece0dbea4c h1:KL/ZBHXgKGVmuZBZ01Lt57yE5ws8ZPSkkihmEyq7FXc=
+golang.org/x/exp v0.0.0-20250128182459-e0ece0dbea4c/go.mod h1:tujkw807nyEEAamNbDrEGzRav+ilXA7PCRAd6xsmwiU=

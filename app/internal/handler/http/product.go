@@ -1,6 +1,7 @@
 package http
 
 import (
+	"fmt"
 	"net/http"
 )
 
@@ -13,8 +14,10 @@ func (h *Handler) GetProduct(w http.ResponseWriter, req *http.Request) {
 		products, err := h.productController.GetByName(ctx, name)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
+			fmt.Printf("Failed to get products by name: %s\n", err)
+		} else {
+			WriteResponse(w, products, http.StatusOK)
 		}
-		WriteResponse(w, products, http.StatusOK)
 		return
 	}
 }
