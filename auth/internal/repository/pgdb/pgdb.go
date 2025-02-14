@@ -39,7 +39,7 @@ func (t *TokenStoreDB) Get(ctx context.Context) (*model.Token, error) {
 	defer t.RUnlock()
 
 	selectQuery := `SELECT * FROM tokens ORDER BY lastupdate DESC LIMIT 1`
-	err := t.db.QueryRowContext(ctx, selectQuery).Scan(&t.data.ID, &t.data.Key, &t.data.Lastupdate) // more performatic for single row query as does not create *Rows object
+	err := t.db.QueryRowContext(ctx, selectQuery).Scan(&t.data.ID, &t.data.Key, &t.data.Lastupdate, &t.data.RefreshToken) // more performatic for single row query as does not create *Rows object
 	if err != nil {
 		return nil, err
 	}
@@ -49,7 +49,15 @@ func (t *TokenStoreDB) Get(ctx context.Context) (*model.Token, error) {
 	if err != nil {
 		return nil, err
 	}
+	byte_refresh_token := []byte(t.data.RefreshToken)
+	decrypted_refresh_token, err := encrypt.DecryptAES(byte_refresh_token)
+	if err != nil {
+		// return nil, err
+	}
+
 	t.data.Key = string(decrypted_token)
+	t.data.RefreshToken = string(decrypted_refresh_token)
+
 	return t.data, nil
 }
 
@@ -62,9 +70,14 @@ func (t *TokenStoreDB) Put(ctx context.Context) error {
 		return err
 	}
 
+	encrypted_refresh_token, err := encrypt.EncryptAES([]byte(t.data.RefreshToken))
+	if err != nil {
+		return err
+	}
+
 	t.data.Lastupdate = time.Now().Format(time.RFC3339)
-	insertQuery := `INSERT INTO tokens (key, lastupdate) VALUES ($1, $2)`
-	_, err = t.db.ExecContext(ctx, insertQuery, encrypted_token, t.data.Lastupdate)
+	insertQuery := `INSERT INTO tokens (key, lastupdate, refresh_token) VALUES ($1, $2, $3)`
+	_, err = t.db.ExecContext(ctx, insertQuery, encrypted_token, t.data.Lastupdate, encrypted_refresh_token)
 	if err != nil {
 		return err
 	}
@@ -75,7 +88,8 @@ func (t *TokenStoreDB) createTable() error {
 	createQuery := `CREATE TABLE IF NOT EXISTS tokens (
 						id SERIAL PRIMARY KEY, 
 						key TEXT, 
-						lastupdate TIMESTAMP)`
+						lastupdate TIMESTAMP,
+						refresh_token TEXT)`
 
 	_, err := t.db.Exec(createQuery)
 	if err != nil {

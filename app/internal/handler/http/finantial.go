@@ -14,8 +14,9 @@ func (h *Handler) GetAccountsReceivable(w http.ResponseWriter, req *http.Request
 		accounts_receivable, err := h.accountReceivableController.GetByName(ctx, name)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
+		} else {
+			WriteResponse(w, accounts_receivable, http.StatusOK)
 		}
-		WriteResponse(w, accounts_receivable, http.StatusOK)
 		return
 	}
 
@@ -30,8 +31,9 @@ func (h *Handler) GetAccountsReceivable(w http.ResponseWriter, req *http.Request
 		accounts_receivable, err := h.accountReceivableController.GetByCPFCNPJ(ctx, cpfcnpj)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
+		} else {
+			WriteResponse(w, accounts_receivable, http.StatusOK)
 		}
-		WriteResponse(w, accounts_receivable, http.StatusOK)
 		return
 	}
 
@@ -56,8 +58,9 @@ func (h *Handler) GetAccountsPayable(w http.ResponseWriter, req *http.Request) {
 		accounts_payable, err := h.accountPayableController.GetByName(ctx, name)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
+		} else {
+			WriteResponse(w, accounts_payable, http.StatusOK)
 		}
-		WriteResponse(w, accounts_payable, http.StatusOK)
 		return
 	}
 
@@ -72,8 +75,9 @@ func (h *Handler) GetAccountsPayable(w http.ResponseWriter, req *http.Request) {
 		accounts_payable, err := h.accountPayableController.GetByCPFCNPJ(ctx, cpfcnpj)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
+		} else {
+			WriteResponse(w, accounts_payable, http.StatusOK)
 		}
-		WriteResponse(w, accounts_payable, http.StatusOK)
 		return
 	}
 

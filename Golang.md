@@ -277,6 +277,7 @@ func funcName (...) {
 ### deferred function calls
 - a defer is an ordinary function or method call prefixed by the keyworld `defer`
 - IMPORTANT: the expression is evaluated when the statement is executed, but the actual call is _deferred_ until the function that contains it is finished, example
+- IMPORTANT: if there is a os.Exit() or other termination, the defer will never run, which can possible lead to contexts that are not cancelled and still running!
 ```
 func funcName2 (...) func {
     ...
@@ -330,3 +331,5 @@ func funcName1 (...) {
 ### sync
 
 ### context
+
+### mux

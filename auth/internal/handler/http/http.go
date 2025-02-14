@@ -40,6 +40,7 @@ func (h *Handler) PutToken(w http.ResponseWriter, req *http.Request) {
 
 	ctx := req.Context()
 	ctx = context.WithValue(ctx, model.ContextKey, vars.Get("key"))
+	ctx = context.WithValue(ctx, model.RefreshTokenKey, vars.Get("refresh_token"))
 	if err := h.ctrl.Put(ctx); err != nil {
 		log.Printf("Error putting token: %v\n", err)
 		w.WriteHeader(http.StatusInternalServerError)

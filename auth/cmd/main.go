@@ -3,6 +3,7 @@ package main
 import (
 	"auth/internal/controller"
 	httphandler "auth/internal/handler/http"
+	"auth/internal/refresher"
 	"auth/internal/repository"
 	file "auth/internal/repository/file"
 	"auth/internal/repository/pgdb"
@@ -14,6 +15,9 @@ import (
 
 // Returns the token that client can use to access Olist ERP API, refreshes the token automatically and allow to store a new token
 func main() {
+	// Refresh token every 1 minute
+	go refresher.RefreshToken()
+
 	fileRepo, err := file.NewTokenStoreFile()
 	if err != nil {
 		panic(err)

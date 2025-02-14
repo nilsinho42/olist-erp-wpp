@@ -43,6 +43,7 @@ func (c *CompositeTokenRepository) Put(ctx context.Context) error {
 		return err
 	}
 	tokenPrimary.Key = key
+	tokenPrimary.RefreshToken = ctx.Value(model.RefreshTokenKey).(string)
 	err = c.Primary.Put(ctx)
 	if err != nil {
 		log.Printf("Primary repository put failed: %v", err)
@@ -55,6 +56,7 @@ func (c *CompositeTokenRepository) Put(ctx context.Context) error {
 		return err
 	}
 	tokenSecondary.Key = key
+	tokenSecondary.RefreshToken = ctx.Value(model.RefreshTokenKey).(string)
 	err = c.Secondary.Put(ctx)
 	if err != nil {
 		log.Printf("Secondary repository failed: %v", err)

@@ -54,7 +54,15 @@ func (t *TokenStoreFile) Get(_ context.Context) (*model.Token, error) {
 		return nil, err
 	}
 
+	byte_refresh_token := []byte(t.data.RefreshToken)
+	decrypted_refresh_token, err := encrypt.DecryptAES(byte_refresh_token)
+	if err != nil {
+		// return nil, err
+	}
+
 	t.data.Key = string(decrypted_token)
+	t.data.RefreshToken = string(decrypted_refresh_token)
+
 	return t.data, err
 }
 
@@ -67,9 +75,14 @@ func (t *TokenStoreFile) Put(_ context.Context) error {
 	if err != nil {
 		return err
 	}
+	encrypted_refresh_token, err := encrypt.EncryptAES([]byte(t.data.RefreshToken))
+	if err != nil {
+		return err
+	}
 
 	// decrypt> 4) update the token
 	t.data.Key = string(encrypted_token)
+	t.data.RefreshToken = string(encrypted_refresh_token)
 
 	// decrypt> 5) update the last updated time
 	t.data.ID++

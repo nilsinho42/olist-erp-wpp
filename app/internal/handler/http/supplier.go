@@ -14,8 +14,9 @@ func (h *Handler) GetSupplier(w http.ResponseWriter, req *http.Request) {
 		suppliers, err := h.supplierController.GetByName(ctx, name)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
+		} else {
+			WriteResponse(w, suppliers, http.StatusOK)
 		}
-		WriteResponse(w, suppliers, http.StatusOK)
 		return
 	}
 
@@ -24,8 +25,9 @@ func (h *Handler) GetSupplier(w http.ResponseWriter, req *http.Request) {
 		suppliers, err := h.supplierController.GetByCode(ctx, code)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
+		} else {
+			WriteResponse(w, suppliers, http.StatusOK)
 		}
-		WriteResponse(w, suppliers, http.StatusOK)
 		return
 	}
 
@@ -40,8 +42,9 @@ func (h *Handler) GetSupplier(w http.ResponseWriter, req *http.Request) {
 		suppliers, err := h.supplierController.GetByCPFCNPJ(ctx, cpfcnpj)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
+		} else {
+			WriteResponse(w, suppliers, http.StatusOK)
 		}
-		WriteResponse(w, suppliers, http.StatusOK)
 		return
 	}
 }

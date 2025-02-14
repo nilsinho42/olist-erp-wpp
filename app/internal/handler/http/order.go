@@ -14,8 +14,9 @@ func (h *Handler) GetOrder(w http.ResponseWriter, req *http.Request) {
 		orders, err := h.orderController.GetByName(ctx, name)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
+		} else {
+			WriteResponse(w, orders, http.StatusOK)
 		}
-		WriteResponse(w, orders, http.StatusOK)
 		return
 	}
 
@@ -24,8 +25,9 @@ func (h *Handler) GetOrder(w http.ResponseWriter, req *http.Request) {
 		orders, err := h.orderController.GetByCode(ctx, code)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
+		} else {
+			WriteResponse(w, orders, http.StatusOK)
 		}
-		WriteResponse(w, orders, http.StatusOK)
 		return
 	}
 
@@ -40,8 +42,9 @@ func (h *Handler) GetOrder(w http.ResponseWriter, req *http.Request) {
 		orders, err := h.orderController.GetByCPFCNPJ(ctx, cpfcnpj)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
+		} else {
+			WriteResponse(w, orders, http.StatusOK)
 		}
-		WriteResponse(w, orders, http.StatusOK)
 		return
 	}
 }

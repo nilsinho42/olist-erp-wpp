@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"net/http"
 	"sync"
+	"time"
 )
 
 type OrderController struct {
@@ -39,7 +40,7 @@ func (c *OrderController) GetByName(ctx context.Context, name string) ([]*model.
 	// Add the Bearer token to the request header
 	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", c.token))
 
-	client := &http.Client{}
+	client := &http.Client{Timeout: 10 * time.Second}
 	resp, err := client.Do(req)
 	if err != nil {
 		return nil, fmt.Errorf("failed to make request to Olist ERP API: %w", err)
@@ -90,7 +91,7 @@ func (c *OrderController) GetByCode(ctx context.Context, code string) ([]*model.
 	// Add the Bearer token to the request header
 	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", c.token))
 
-	client := &http.Client{}
+	client := &http.Client{Timeout: 10 * time.Second}
 	resp, err := client.Do(req)
 	if err != nil {
 		return nil, fmt.Errorf("failed to make request to Olist ERP API: %w", err)
@@ -132,7 +133,7 @@ func (c *OrderController) GetByCPFCNPJ(ctx context.Context, cpfcnpj string) ([]*
 	// Add the Bearer token to the request header
 	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", c.token))
 
-	client := &http.Client{}
+	client := &http.Client{Timeout: 10 * time.Second}
 	resp, err := client.Do(req)
 	if err != nil {
 		return nil, fmt.Errorf("failed to make request to Olist ERP API: %w", err)

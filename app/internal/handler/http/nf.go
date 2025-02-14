@@ -14,8 +14,9 @@ func (h *Handler) GetNF(w http.ResponseWriter, req *http.Request) {
 		nfs, err := h.nfController.GetByName(ctx, name)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
+		} else {
+			WriteResponse(w, nfs, http.StatusOK)
 		}
-		WriteResponse(w, nfs, http.StatusOK)
 		return
 	}
 
@@ -24,8 +25,9 @@ func (h *Handler) GetNF(w http.ResponseWriter, req *http.Request) {
 		nfs, err := h.nfController.GetByNumero(ctx, numero)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
+		} else {
+			WriteResponse(w, nfs, http.StatusOK)
 		}
-		WriteResponse(w, nfs, http.StatusOK)
 		return
 	}
 
@@ -40,8 +42,9 @@ func (h *Handler) GetNF(w http.ResponseWriter, req *http.Request) {
 		nfs, err := h.nfController.GetByCPFCNPJ(ctx, cpfcnpj)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
+		} else {
+			WriteResponse(w, nfs, http.StatusOK)
 		}
-		WriteResponse(w, nfs, http.StatusOK)
 		return
 	}
 }

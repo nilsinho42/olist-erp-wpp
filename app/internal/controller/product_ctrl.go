@@ -48,7 +48,7 @@ func (c *ProductController) GetByName(ctx context.Context, name string) ([]*mode
 		// Add the Bearer token to the request header
 		req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", c.token))
 
-		client := &http.Client{}
+		client := &http.Client{Timeout: 10 * time.Second}
 		resp, err := client.Do(req)
 		if err != nil {
 			return nil, fmt.Errorf("failed to make request to Olist ERP API: %w", err)
@@ -212,7 +212,7 @@ func getProductInfo(c *ProductController, id int) (*model.Product, error) {
 	}
 	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", c.token))
 
-	client := &http.Client{}
+	client := &http.Client{Timeout: 10 * time.Second}
 	resp, err := client.Do(req)
 
 	failures := 1

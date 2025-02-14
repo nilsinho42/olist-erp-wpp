@@ -107,7 +107,7 @@ func (c *NFController) GetByCPFCNPJ(ctx context.Context, cpfcnpj string) ([]*mod
 	// Add the Bearer token to the request header
 	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", c.token))
 
-	client := &http.Client{}
+	client := &http.Client{Timeout: 10 * time.Second}
 	resp, err := client.Do(req)
 	if err != nil {
 		return nil, fmt.Errorf("failed to make request to Olist ERP API: %w", err)
@@ -258,7 +258,7 @@ func getNFLink(c *NFController, id int) (string, error) {
 		return "", fmt.Errorf("failed to create request to Olist ERP API 1: %w", err)
 	}
 	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", c.token))
-	client := &http.Client{}
+	client := &http.Client{Timeout: 10 * time.Second}
 	resp, err := client.Do(req)
 
 	failures := 1

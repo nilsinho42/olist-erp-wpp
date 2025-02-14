@@ -14,8 +14,9 @@ func (h *Handler) GetCustomer(w http.ResponseWriter, req *http.Request) {
 		customers, err := h.customerController.GetByName(ctx, name)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
+		} else {
+			WriteResponse(w, customers, http.StatusOK)
 		}
-		WriteResponse(w, customers, http.StatusOK)
 		return
 	}
 
@@ -24,8 +25,9 @@ func (h *Handler) GetCustomer(w http.ResponseWriter, req *http.Request) {
 		customers, err := h.customerController.GetByCode(ctx, code)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
+		} else {
+			WriteResponse(w, customers, http.StatusOK)
 		}
-		WriteResponse(w, customers, http.StatusOK)
 		return
 	}
 
@@ -40,8 +42,9 @@ func (h *Handler) GetCustomer(w http.ResponseWriter, req *http.Request) {
 		customers, err := h.customerController.GetByCPFCNPJ(ctx, cpfcnpj)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
+		} else {
+			WriteResponse(w, customers, http.StatusOK)
 		}
-		WriteResponse(w, customers, http.StatusOK)
 		return
 	}
 }

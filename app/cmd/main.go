@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/gorilla/mux"
 	"github.com/nilsinho42/OlistERPMediator/auth/pkg/model"
@@ -77,7 +78,16 @@ func main() {
 	// r.HandleFunc("/v1/nf", h.GetNF).Methods("GET")
 	// r.HandleFunc("/v1/financial", h.GetFinancial).Methods("GET")
 
-	if err := http.ListenAndServe(":8082", r); err != nil {
+	srv := &http.Server{
+		Addr: "0.0.0.0:8082",
+		// Good practice to set timeouts to avoid Slowloris attacks.
+		WriteTimeout: time.Second * 15,
+		ReadTimeout:  time.Second * 15,
+		IdleTimeout:  time.Second * 60,
+		Handler:      r, // Pass our instance of gorilla/mux in.
+	}
+
+	if err := srv.ListenAndServe(); err != nil {
 		panic(err)
 	}
 }

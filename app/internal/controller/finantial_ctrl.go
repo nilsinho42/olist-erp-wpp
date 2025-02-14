@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"strings"
 	"sync"
+	"time"
 )
 
 type AccountReceivableController struct {
@@ -44,7 +45,7 @@ func (c *AccountReceivableController) GetByName(ctx context.Context, name string
 	// Add the Bearer token to the request header
 	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", c.token))
 
-	client := &http.Client{}
+	client := &http.Client{Timeout: 10 * time.Second}
 	resp, err := client.Do(req)
 	if err != nil {
 		return nil, fmt.Errorf("failed to make request to Olist ERP API: %w", err)
@@ -92,7 +93,7 @@ func (c *AccountReceivableController) GetByNF(ctx context.Context, code string) 
 	// Add the Bearer token to the request header
 	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", c.token))
 
-	client := &http.Client{}
+	client := &http.Client{Timeout: 10 * time.Second}
 	resp, err := client.Do(req)
 	if err != nil {
 		return nil, fmt.Errorf("failed to make request to Olist ERP API: %w", err)
@@ -137,7 +138,7 @@ func (c *AccountReceivableController) GetByCPFCNPJ(ctx context.Context, cpfcnpj 
 	// Add the Bearer token to the request header
 	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", c.token))
 
-	client := &http.Client{}
+	client := &http.Client{Timeout: 10 * time.Second}
 	resp, err := client.Do(req)
 	if err != nil {
 		return nil, fmt.Errorf("failed to make request to Olist ERP API: %w", err)
@@ -238,7 +239,7 @@ func (c *AccountPayableController) GetByName(ctx context.Context, name string) (
 	// Add the Bearer token to the request header
 	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", c.token))
 
-	client := &http.Client{}
+	client := &http.Client{Timeout: 10 * time.Second}
 	resp, err := client.Do(req)
 	if err != nil {
 		return nil, fmt.Errorf("failed to make request to Olist ERP API: %w", err)
@@ -283,7 +284,7 @@ func (c *AccountPayableController) GetByCPFCNPJ(ctx context.Context, cpfcnpj str
 	// Add the Bearer token to the request header
 	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", c.token))
 
-	client := &http.Client{}
+	client := &http.Client{Timeout: 10 * time.Second}
 	resp, err := client.Do(req)
 	if err != nil {
 		return nil, fmt.Errorf("failed to make request to Olist ERP API: %w", err)
